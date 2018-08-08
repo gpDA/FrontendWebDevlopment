@@ -1,0 +1,33 @@
+- If a stylesheet containts multiple styles that could apply to the same element, the styles with a selector of higher specificity will be used
+- styles from the closer ancestor take priority
+- Images are display: inline by default
+- display property to block removes the whitespace because there is no need to accommodate any text
+- child selectors target elements of a specified type that are the immediate children of another specified element. Child selector syntax uses the combinator >
+- li > span : this targets any span that is the immediate child of a li element
+- sibling selector uses combinator ~ . This tragets elements with the same parent
+- header ~ ul : this targets any ul that is preceded by a header with the same parent element
+- adjacent sibling slector targets elements that are immediately preceded by a sibling of the specified type
+- li + li : select all li elements immediately preceded by a sibling li. it applies to li 2nd to the last (not the first) because it is not immediately preceded by another li
+- @font-face syntax lets you give a custom name to a family of fonts
+- with inline-block, the element's box is drawn as if you declared display: block, but without the line breaks - allowing your thumbnails to stay lined up in a row
+- .thumbnail-item { width: 120px} : why not just set the .thumbnail-image to width: 120px? you want the .thumbnail-image and the .thumbnail-title to be the smae width
+- white-space: nowrap prevents the .thumbnail-tiem elements from wrapping
+- overflow-x: auto tells the browser that it should add a scrollbar along the horizontal space
+- Flexbox CSS properties can ensure that thumbnail and detail areas fill the screen and maintain their proportions relative to one another
+- display: flex; : main axis goes from left to right, laying the flex items out in a row
+- flex-direction: column; : to change axis goes from vertically
+- by wrapping the .thumbnail-list and .detail-image-container in the .main-content element, you are now free to declare a height for the <header>, leaving the rest of the <body>'s vertical space for the .main-content to occupy
+- If the flex items do not specify their size along the main aixs, then the container distributes the space envely based on the number of flex items
+- (flex shorthand) flex: 0 1 auto; (flex: flex-grow flex-shrink flex-basis)
+- flex-grow 1 : I would like to grow as much as possible
+- instead of stying the smallest, innermost elements first and then working your way out to the largest elements, when working on a layout with flexbox it is more useful to start with the outermost elements and work your way in
+- .thumbnail-list  takes the default amount of space and .detail-image-container grows to fill the space left over
+- order: 2 tells the browser to draw it after any of its siblings that have a lower value for order
+- min-width and max-width will remove the variations in size
+- data attributes do not have special meaning to the browser. The only requirement is that the attribute name starts with data-
+- using custom data attributes lets you designate what HTML elements on the page your JS interacts with
+- code will be much more maintainable if JS and CSS do not rely on the same attributes
+- when the browswer sees a <script> tag, it begins running the code in the referenced file immediately.
+JS cannot access an element within your HTML before it has been rendered by the browser, so putting the <script> tag at the bottom of the body
+ensures that JS does not run until after all the markup has been parsed
+- preventDefault method will stop the link from taking the browser to a different page
