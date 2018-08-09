@@ -1,0 +1,72 @@
+- ES5 does not have a formal way to organize code into self-contained modules, but you can get the same kind of organization
+by putting related code inside the body of a function
+- for example) (function(){ //code will go here })();
+- IIFE (immediately invoked function expressions) are useful when you want to run some code once
+without creating any extra global variables or functions
+- you attached DataStore to the App object and reassigned the global App property to
+newly modified App
+- for callback functions this is not automatically assigned to an object. You can manually specify what object
+should be the owner by using a function's bind method
+- Outside the body of the forEach callback, the keyword this refers to the Truck instance.
+By adding .bind(this) immediately after the anonymous function - but inside the parentheses for the forEach callback
+you are passing forEach a modified version of the anonymous function
+- You still cannot interact with the instance of Truck because the variable is declared
+inside of a function, the main module. Functions protedt their variables from being
+accessed by code outside of the function. So to interact with the instance of Truck,
+export it to the global namespace in main.js
+- <form> tag... you gave it a data-coffee-order attribute with the value form. In coffeeRun,
+you will use data attributes for accessing DOM elements from JS, just as you did in Ottergram
+- Error is a built-in type that lets you formally signal that there is an unexpected value or condition in your code
+- jQuery provides a convenience method for getting the values from the form
+- you want createOrder to be called each time a submit event occurs. But you cannot just pass a
+reference to createOrder to formHandler.addSubmitHandler. This is because createOrder's owner changes when it is invoked inside
+of the event handling callback. With a different owner, the value of this inside the body
+of createOrder will not be the Truck instance, thus causing an error when createOrder runs.
+Instead, you will pass a bound reference to myTruck.createOrder to formHandler.addSubmitHandler
+- You cannot create markup in index.html for the checklist items because they need to be added after the page has already been rendered,
+in reponse to form submission. Instead, you will add a Row constructor to the CheckList module
+- 'class' is in single quotes because "class" is a JS reserved word, so single quotes are needed to prevent
+the browser from reading it as JS
+- Row will be used as a consturctor and not a regular function, it cannot simply return this subtree.
+(In fact, constructors should never have a return statement; JS automatically returns a value for you 
+when you use the keyword new with a constructor)
+- Instead, make the subtree available as a property of the instance by assigning it to this.$element in checklist.js
+- You might be tempted to just add anotehr call to formHandler.addSubmitHandler, BUT this would not work
+the way you might expect because each time yuo call addSubmitHandler, it registers a new callback
+that resets the form (by calling this.reset)
+- formHandler.addSubmitHandler(CheckList.addRow.bind(CheckList)); NOT WORK because this coderegisters two callbacks that will run when the form is submitted.
+After the first submit handler (myTruck.createOrder) is called, the form gets reset.
+When the second submit handler (checkList.addRow) is called, there is no information left in the form.
+To get around this, you need to pass a single anonymous function to formHandler.addSubmitHandler and
+have that anonymous function call both myTruck.createOrder & checkList.addRow
+- call vs. bind : call method works similarly to bind to set the value of this.
+The difference between the two is that while bind returns a new version of the function or method,
+it does not invoke it.
+call actually invokes the function or method and allows you to pass in the value of this as the first argument
+call runs the body of the function and returns any value that would normally be returned
+- You need to use call instead of bind here because you need to invoke myTruck.createOrder and checkList.addRow
+in addition to setting the value of this
+- addSubmitHandler : when you registered the event handler callback with this.$element.on, you specified
+click as the event name. But you also passed in a filtering selector as the second argument. The filtering selector
+tells the event handler to run the callback function only if the event was triggered by an <input> element
+- Any time yuo need to listen for an event on elements that are dynamically created and removed,
+such as the checklist items, you should use event delegation (each ancestor element is informed about the event)
+- Notice that the key argument is not used. It is kept as part of the method declaration so that the
+add method of RemoteDataStore is identical to the add method of DataStore. 
+Both take the coffee order information as the second argument
+- $.post know 3 things 1) who to talk to 2) what to say 3) what to do with the information it gets back in the response
+- You can retrieve the data from the server, but you cannot return it from getAll because
+getAll only makes the initial Ajax request; it does not handle the response.
+Instead, you pass a response handling callback to $.get
+- Finally, instead of passing the Truck constructor a new instance of DataStore, pass it remoteDS because
+DataStore & RemoteDataStore have methods with the same names and take the same arguments
+- Promises make this simple. Instead of relying on callback arguments, you will return Promises
+objects, which will let you decouple your modules even further
+- Every Promise object has a then method that is triggered when the Promise becomes fullfilled.
+You can call then and pass it a callback; when the Promise is fulfilled, the callback is invoked and passed whatever
+value the Promise received when doing its asynchronous work
+- You can also chain multiple then calls together. Instead of writing functions that accept and then invoke callbacks,
+it is better to return Promise objects and let the caller chain a then off of that Promise
+- Deferred objects have methods that let you register callbacks for two of their states: fulfilled and rejected
+- When using Promises and Deferreds, it is a best practice to return them from your functions
+- change this so that addRow is registered as a callback of createOrder
